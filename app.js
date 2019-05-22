@@ -80,6 +80,17 @@ app.delete("/api/genres/:id", (req, res) => {
   res.send(genre);
 });
 
+// Input Validation
+function validateGenre(genre) {
+  const schema = {
+    name: Joi.string()
+      .min(4)
+      .required()
+  };
+
+  return Joi.validate(genre, schema);
+}
+
 // PORT
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
