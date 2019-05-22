@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
+
 const genres = [
   { id: 1, name: "Horror" },
   { id: 2, name: "Sci-Fi" },
@@ -12,14 +13,6 @@ const genres = [
 // HTTP Get request for all genres
 app.get("/api/genres", (req, res) => {
   res.send(genres);
-});
-
-// Get request for a genre's ID
-app.get("/api/genres/:id", (req, res) => {
-  const genre = genres.find(c => c.id === parseInt(req.params.id));
-  if (!genre)
-    return res.status(404).send("The genre with the given ID was not found");
-  res.send(genre);
 });
 
 // POST request
@@ -41,9 +34,7 @@ app.put("/api/genres/:id", (req, res) => {
   const genre = genres.find(c => c.id === parseInt(req.params.id));
 
   if (!genre)
-    return res
-      .status(404)
-      .send("The genre request with the given ID was not found");
+    return res.status(404).send("The genre with the given ID was not found");
 
   const { error } = validateGenre(req.body);
 
@@ -63,6 +54,14 @@ app.delete("/api/genres/:id", (req, res) => {
 
   const index = genres.indexOf(genre);
   genres.slice(index, 1);
+  res.send(genre);
+});
+
+// Get request for a genre's ID
+app.get("/api/genres/:id", (req, res) => {
+  const genre = genres.find(c => c.id === parseInt(req.params.id));
+  if (!genre)
+    return res.status(404).send("The genre with the given ID was not found");
   res.send(genre);
 });
 
