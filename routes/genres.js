@@ -1,18 +1,7 @@
+const { Genre, validateGenre } = require("../models/genre");
 const mongoose = require("mongoose");
-const Joi = require("@hapi/joi");
 const express = require("express");
 const router = express.Router();
-
-const genreSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 50
-  }
-});
-
-const Genre = mongoose.model("genre", genreSchema);
 
 // HTTP Get request for all genres
 router.get("/", async (req, res) => {
@@ -69,16 +58,5 @@ router.get("/:id", async (req, res) => {
     return res.status(404).send("The genre with the given ID was not found");
   res.send(genre);
 });
-
-// Input Validation
-function validateGenre(genre) {
-  const schema = {
-    name: Joi.string()
-      .min(4)
-      .required()
-  };
-
-  return Joi.validate(genre, schema);
-}
 
 module.exports = router;
